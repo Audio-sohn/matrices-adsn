@@ -27,14 +27,18 @@ func (m Matrix) EliminateBelow(row int) {
 	//catchen falls nicht normiert
 	if m[row][row] != 1 {
 
-		return
+		m.Normalize(row)
 
 	}
 
 	//durch restliche zeilen iterieren
 	for i := row + 1; i < len(m); i++ {
 
-		m[i] = arraytools.Add_return(m[row], arraytools.ScalarMult_return(m[i], -1/m[i][col]))
+		if m[i][col] != 0 {
+
+			m[i] = arraytools.Add_return(m[row], arraytools.ScalarMult_return(m[i], -1/m[i][col]))
+
+		}
 
 	}
 
@@ -50,14 +54,17 @@ func (m Matrix) EliminateAbove(row int) {
 	//catchen falls nicht normiert
 	if m[row][row] != 1 {
 
-		return
+		m.Normalize(row)
 
 	}
 
 	//durch restliche zeilen iterieren
 	for i := row - 1; i >= 0; i-- {
+		if m[i][col] != 0 {
 
-		m[i] = arraytools.Add_return(m[row], arraytools.ScalarMult_return(m[i], -1/m[i][col]))
+			m[i] = arraytools.Add_return(m[row], arraytools.ScalarMult_return(m[i], -1/m[i][col]))
+
+		}
 
 	}
 
@@ -69,26 +76,52 @@ func (m Matrix) UpperTriangular() {
 
 	for i := range m {
 
-		//normalize diagonal element
-		if m[i][i] != 1 {
-
-			m.Normalize(i)
-
-		}
-
 		m.EliminateBelow(i)
 
 	}
+
+	m.fixZeroes()
 
 }
 
 // LowerTriangular führt die Gauß-Elimination für alle Zeilen der Matrix durch.
 // So entsteht im linken Bereich eine untere Dreiecksmatrix, bei der die Diagonalelemente 1 sind.
 func (m Matrix) LowerTriangular() {
-	// TODO
+
+	for i := len(m) - 1; i >= 0; i-- {
+
+		m.EliminateAbove(i)
+
+	}
+
+	m.fixZeroes()
 }
 
 // Gauss transformiert die Matrix im linken Bereich in die Einheitsmatrix.
 func (m Matrix) Gauss() {
-	// TODO
+
+	m.UpperTriangular()
+	m.LowerTriangular()
+
+}
+
+func almostEqual(a, b float64) bool {
+
+	return a-b < 1e-10 && (b-a) < 1e-10
+
+}
+
+func (m Matrix) fixZeroes() {
+
+	for i := range m {
+
+		for j := range m[0] {
+
+			if almostEqual(m[i][j], 0) {
+
+				m[i][j] = 0
+
+			}
+		}
+	}
 }

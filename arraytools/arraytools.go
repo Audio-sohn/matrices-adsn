@@ -3,9 +3,6 @@ package arraytools
 // Mult erwartet ein Array und einen skalaren Faktor.
 // Multipliziert jedes Element des Arrays mit dem Faktor.
 
-func AlmostEqual
-
-
 func ScalarMult(a []float64, factor float64) {
 
 	for i, speci := range a {

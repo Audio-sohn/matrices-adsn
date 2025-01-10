@@ -68,6 +68,7 @@ func ExampleMatrix_UpperTriangular() {
 }
 
 func ExampleMatrix_LowerTriangular() {
+
 	m := Matrix{
 		{-3, 6, -3},
 		{4, 5, 2},
@@ -87,10 +88,18 @@ func ExampleMatrix_Gauss() {
 		{2, 1, 0},
 		{1, 3, 2},
 	}
+	m2 := Matrix{
+		{1, 0, 1},
+		{2, 2, 0},
+		{1, 3, 2},
+	}
 
 	m.Gauss()
 	fmt.Println(m)
+	m2.Gauss()
+	fmt.Println(m2)
 
 	// Output:
+	// [[1 0 0] [0 1 0] [0 0 1]]
 	// [[1 0 0] [0 1 0] [0 0 1]]
 }
