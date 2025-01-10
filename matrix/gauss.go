@@ -1,10 +1,20 @@
 package matrix
 
+import "matrices/arraytools"
+
 // Normalize erwartet eine Spaltennummer.
 // Falls das Diagonalelement [col][col] nicht 0 ist, wird die Zeile durch das Diagonalelement normiert.
 // D.h. die gesamte Zeile col wird durch das Diagonalelement geteilt.
 func (m Matrix) Normalize(col int) {
-	// TODO
+
+	//catch error
+	if m[col][col] == 0 {
+		return
+	}
+
+	//do division, write result into row
+	m[col] = arraytools.ScalarMult_return(m[col], 1/m[col][col])
+
 }
 
 // EliminateBelow erwartet eine Zeilennummer `row`.
@@ -12,7 +22,14 @@ func (m Matrix) Normalize(col int) {
 // Dadurch wird jeweils das Element unter dem Diagonalelement 0.
 // Voraussetzung: Die Zeile row ist bereits normiert, d.h. das Diagonalelement ist 1.
 func (m Matrix) EliminateBelow(row int) {
-	// TODO
+
+	//catchen falls nicht
+	if m[row][row] != 1 {
+
+		return
+
+	}
+
 }
 
 // EliminateAbove erwartet eine Zeilennummer `row`.
