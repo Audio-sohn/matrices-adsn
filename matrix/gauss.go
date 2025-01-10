@@ -23,10 +23,18 @@ func (m Matrix) Normalize(col int) {
 // Voraussetzung: Die Zeile row ist bereits normiert, d.h. das Diagonalelement ist 1.
 func (m Matrix) EliminateBelow(row int) {
 
-	//catchen falls nicht
+	col := row
+	//catchen falls nicht normiert
 	if m[row][row] != 1 {
 
 		return
+
+	}
+
+	//durch restliche zeilen iterieren
+	for i := row + 1; i < len(m); i++ {
+
+		m[i] = arraytools.Add_return(m[row], arraytools.ScalarMult_return(m[i], -1/m[i][col]))
 
 	}
 
@@ -37,13 +45,41 @@ func (m Matrix) EliminateBelow(row int) {
 // Dadurch wird jeweils das Element über dem Diagonalelement 0.
 // Voraussetzung: Die Zeile row ist bereits normiert, d.h. das Diagonalelement ist 1.
 func (m Matrix) EliminateAbove(row int) {
-	// TODO
+
+	col := row
+	//catchen falls nicht normiert
+	if m[row][row] != 1 {
+
+		return
+
+	}
+
+	//durch restliche zeilen iterieren
+	for i := row - 1; i >= 0; i-- {
+
+		m[i] = arraytools.Add_return(m[row], arraytools.ScalarMult_return(m[i], -1/m[i][col]))
+
+	}
+
 }
 
 // UpperTriangular führt die Gauß-Elimination für alle Zeilen der Matrix durch.
 // So entsteht im linken Bereich eine obere Dreiecksmatrix, bei der die Diagonalelemente 1 sind.
 func (m Matrix) UpperTriangular() {
-	// TODO
+
+	for i := range m {
+
+		//normalize diagonal element
+		if m[i][i] != 1 {
+
+			m.Normalize(i)
+
+		}
+
+		m.EliminateBelow(i)
+
+	}
+
 }
 
 // LowerTriangular führt die Gauß-Elimination für alle Zeilen der Matrix durch.
